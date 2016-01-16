@@ -1,0 +1,51 @@
+DROP TABLE PREREQUISITE;
+DROP TABLE GRADE_REPORT;
+DROP TABLE SECTION;
+DROP TABLE COURSE;
+DROP TABLE STUDENT;
+
+CREATE TABLE STUDENT
+( "NAME" VARCHAR(15) NOT NULL,
+Student_number INT NOT NULL,
+"CLASS" INT,
+Major CHAR(15),
+PRIMARY KEY (Student_number) );
+
+CREATE TABLE COURSE
+( Course_name VARCHAR(50) NOT NULL,
+Course_number CHAR(20) NOT NULL,
+Credit_hours INT,
+Department CHAR(20),
+PRIMARY KEY (Course_number));
+
+CREATE TABLE SECTION
+( Section_identifier INT NOT NULL,
+Course_number CHAR(20) NOT NULL,
+Semester CHAR(15) NOT NULL,
+"YEAR" CHAR(2) NOT NULL,
+Instructor  CHAR(20),
+PRIMARY KEY (Section_identifier),
+CONSTRAINT fkcourse_no FOREIGN KEY(Course_number) REFERENCES COURSE(Course_number)
+ON DELETE CASCADE
+);
+
+CREATE TABLE GRADE_REPORT
+( Student_number INT NOT NULL,
+Section_identifier INT NOT NULL,
+Grade CHAR,
+PRIMARY KEY (Student_number,Section_identifier),
+CONSTRAINT fkstud_no FOREIGN KEY(Student_number) REFERENCES STUDENT(Student_number)
+ON DELETE CASCADE,
+CONSTRAINT fksec_iden FOREIGN KEY(Section_identifier) REFERENCES SECTION(Section_identifier)
+ON DELETE SET NULL
+);
+
+CREATE TABLE PREREQUISITE
+( Course_number CHAR(20) NOT NULL,
+Prerequisite_number CHAR(20) NOT NULL,
+PRIMARY KEY (Course_number),
+CONSTRAINT fkcourse FOREIGN KEY(Course_number) REFERENCES COURSE(Course_number)
+ON DELETE CASCADE,
+CONSTRAINT fkprereq_no FOREIGN KEY(Prerequisite_number) REFERENCES COURSE(Course_number)
+ON DELETE SET NULL);
+
